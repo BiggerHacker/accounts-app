@@ -2,6 +2,7 @@ import * as React from 'react'
 import { getRecords } from '../api/record'
 
 import Record from './Record'
+import RecordForm from './RecordForm'
 
 export interface IRecord {
   id: string;
@@ -44,6 +45,8 @@ class Records extends React.Component<{}, IRecordState> {
 
   render () {
     const { records, errMessage, isLoading } = this.state
+
+    let recordsComponent = null;
     
     let recordItem = null;
     recordItem = records.map(item => {
@@ -51,28 +54,33 @@ class Records extends React.Component<{}, IRecordState> {
     })
 
     if (errMessage) {
-      return <div>{errMessage}</div>
+      recordsComponent = <div>{errMessage}</div>
     } else if (isLoading) {
-      return <div>loading</div>
+      recordsComponent = <div>loading</div>
     } else {
-      return (
-        <div>
-          <h2>records</h2>
-          <table className="table table-bordered">
-            <thead>
-              <tr>
-                <th>Date</th>
-                <th>Title</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recordItem}
-            </tbody>
-          </table>
-        </div>
+      recordsComponent = (
+        <table className="table table-bordered">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Title</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+            {recordItem}
+          </tbody>
+        </table>
       )
     }
+
+    return (
+      <div>
+        <h2>records</h2>
+        <RecordForm />
+        {recordsComponent}
+      </div>
+    )
   }
 }
 
