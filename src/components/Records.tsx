@@ -10,13 +10,13 @@ export interface IRecord {
   amount: number;
 }
 
-interface RecordState {
+interface IRecordState {
   errMessage: string;
   isLoading: boolean;
   records: IRecord[];
 }
 
-class Records extends React.Component<{}, RecordState> {
+class Records extends React.Component<{}, IRecordState> {
   constructor (props: {}) {
     super(props)
     this.state = {
