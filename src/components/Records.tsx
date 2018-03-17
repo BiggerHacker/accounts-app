@@ -43,29 +43,36 @@ class Records extends React.Component<{}, IRecordState> {
   }
 
   render () {
-    const { records } = this.state
+    const { records, errMessage, isLoading } = this.state
+    
     let recordItem = null;
     recordItem = records.map(item => {
       return <Record {...item} key={item.date} />
     })
 
-    return (
-      <div>
-        <h2>records</h2>
-        <table className="table table-bordered">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Title</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
-            {recordItem}
-          </tbody>
-        </table>
-      </div>
-    )
+    if (errMessage) {
+      return <div>{errMessage}</div>
+    } else if (isLoading) {
+      return <div>loading</div>
+    } else {
+      return (
+        <div>
+          <h2>records</h2>
+          <table className="table table-bordered">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Title</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {recordItem}
+            </tbody>
+          </table>
+        </div>
+      )
+    }
   }
 }
 
