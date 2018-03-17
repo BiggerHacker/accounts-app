@@ -1,5 +1,5 @@
 import * as React from 'react'
-import axios from 'axios'
+import { getRecords } from '../api/record'
 
 import Record from './Record'
 
@@ -27,7 +27,7 @@ class Records extends React.Component<{}, IRecordState> {
   }
 
   componentDidMount () {
-    axios.get('https://5aabb7130deaa20014f92b96.mockapi.io/api/v1/records')
+    getRecords()
          .then((res: {data: IRecord[]}) => {
            this.setState({
              records: res.data,
