@@ -28,19 +28,17 @@ class Records extends React.Component<{}, IRecordState> {
   }
 
   componentDidMount () {
-    getRecords()
-         .then((res: {data: IRecord[]}) => {
-           this.setState({
-             records: res.data,
-             isLoading: false
-           })
-         })
-         .catch((err: {message: string}) => {
-           this.setState({
-             errMessage: err.message,
-             isLoading: false
-           })
-         })
+    getRecords().then((res: {data: IRecord[]}) => {
+      this.setState({
+        records: res.data,
+        isLoading: false
+      })
+    }).catch((err: {message: string}) => {
+      this.setState({
+        errMessage: err.message,
+        isLoading: false
+      })
+    })
   }
 
   handleCreate = (record: IRecord) => {
