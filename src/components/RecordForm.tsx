@@ -29,6 +29,14 @@ class RecordForm extends React.Component<IRecordFormProp, IRecordFormState> {
     }
   }
 
+  restoreState = () => {
+    this.setState({
+      date: '',
+      title: '',
+      amount: ''
+    })
+  }
+
   handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const {name, value} = event.target
     const obj = {}
@@ -46,12 +54,8 @@ class RecordForm extends React.Component<IRecordFormProp, IRecordFormState> {
       title,
       amount: Number(amount)
     }
+    this.restoreState()
     createRecord(data).then((res: {data: IRecord}) => {
-      this.setState({
-        date: '',
-        title: '',
-        amount: ''
-      })
       this.props.onHandleCreate(res.data)
     }).catch((err: {}) => {
       console.log(err)
