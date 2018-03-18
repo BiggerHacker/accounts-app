@@ -73,6 +73,7 @@ class Records extends React.Component<{}, IRecordState> {
               <th>Date</th>
               <th>Title</th>
               <th>Amount</th>
+              <th>Action</th>
             </tr>
           </thead>
           <tbody>
