@@ -43,6 +43,16 @@ class Records extends React.Component<{}, IRecordState> {
          })
   }
 
+  handleCreate = (record: IRecord) => {
+    this.setState({
+      isLoading: false,
+      records: [
+        ...this.state.records,
+        record
+      ]
+    })
+  }
+
   render () {
     const { records, errMessage, isLoading } = this.state
 
@@ -77,7 +87,7 @@ class Records extends React.Component<{}, IRecordState> {
     return (
       <div>
         <h2>records</h2>
-        <RecordForm />
+        <RecordForm onHandleCreate={this.handleCreate} />
         {recordsComponent}
       </div>
     )
