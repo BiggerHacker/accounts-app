@@ -13,7 +13,8 @@ class Record extends React.Component<IRecord, IRecordState> {
     id: PropTypes.string.isRequired,
     date: PropTypes.string,
     title: PropTypes.string,
-    amount: PropTypes.number
+    amount: PropTypes.number,
+    handleUpdate: PropTypes.func
   }
 
   private recordDateVal: HTMLInputElement
@@ -34,14 +35,22 @@ class Record extends React.Component<IRecord, IRecordState> {
   }
 
   update = () => {
-    const { id } = this.props
+    const { id, date, amount, title, handleUpdate } = this.props
     const data = {
       date: this.recordDateVal.value,
       title: this.recordTitleVal.value,
       amount: Number(this.recordAmountVal.value)
     }
+    const record = {
+      id,
+      date,
+      title,
+      amount
+    }
     updateRecord(id, data).then((res: {data: IRecord}) => {
-      console.log(res.data)
+      if (handleUpdate) {
+        handleUpdate(record, res.data)
+      }
       this.setState({
         isEdit: false
       })
