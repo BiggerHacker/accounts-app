@@ -9,7 +9,8 @@ export interface IRecord {
   date: string;
   title: string;
   amount: number;
-  handleUpdate?: (oldRecord: IRecord, newRecord: IRecord) => void
+  handleUpdate?: (oldRecord: IRecord, newRecord: IRecord) => void;
+  handleDelete?: (record: IRecord) => void;
 }
 
 interface IRecordState {
@@ -52,7 +53,7 @@ class Records extends React.Component<{}, IRecordState> {
     })
   }
 
-  update = (oldRecord: IRecord, newRecord: IRecord) => {
+  handleUpdate = (oldRecord: IRecord, newRecord: IRecord) => {
     const { records } = this.state
     const recordIndex: number[] = records.map((item: IRecord, index: number) => {
       if (item.id === oldRecord.id) {
@@ -60,7 +61,7 @@ class Records extends React.Component<{}, IRecordState> {
       }
       return -1
     })
-    const updateRecord: IRecord[] = records.map((item: IRecord, index: number): IRecord => {
+    const updateRecords: IRecord[] = records.map((item: IRecord, index: number): IRecord => {
       if (index !== recordIndex[index]) {
         return item
       }
@@ -70,20 +71,30 @@ class Records extends React.Component<{}, IRecordState> {
       }
     })
     this.setState({
-      records: updateRecord
+      records: updateRecords
+    })
+  }
+
+  handleDelete = (record: IRecord) => {
+    const { records } = this.state
+    const newRecords: IRecord[] = records.filter((item: IRecord) => {
+      return item.id !== record.id
+    })
+    this.setState({
+      records: newRecords
     })
   }
 
   render () {
     const { records, errMessage, isLoading } = this.state
 
-    const { handleCreate, update } = this
+    const { handleCreate, handleUpdate, handleDelete } = this
 
     let recordsComponent = null;
     
     let recordItem = null;
     recordItem = records.map(item => {
-      return <Record {...item} key={item.date} handleUpdate={update} />
+      return <Record {...item} key={item.date} handleUpdate={handleUpdate} handleDelete={handleDelete} />
     })
 
     if (errMessage) {

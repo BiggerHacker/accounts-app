@@ -11,3 +11,6 @@ export const createRecord = (body: IRecordFormState) =>
 
 export const updateRecord = (id: string, body: IRecordFormState) => 
   axios.put(`${api}/records/${id}`, body)
+
+export const deleteRecord = (id: string) =>
+  axios.delete(`${api}/records/${id}`)

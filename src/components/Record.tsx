@@ -2,7 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 
 import { IRecord } from './Records'
-import { updateRecord } from '../api/record'
+import { updateRecord, deleteRecord } from '../api/record'
 
 interface IRecordState {
   isEdit: boolean
@@ -14,7 +14,8 @@ class Record extends React.Component<IRecord, IRecordState> {
     date: PropTypes.string,
     title: PropTypes.string,
     amount: PropTypes.number,
-    handleUpdate: PropTypes.func
+    handleUpdate: PropTypes.func,
+    handleDelete: PropTypes.func
   }
 
   private recordDateVal: HTMLInputElement
@@ -34,7 +35,7 @@ class Record extends React.Component<IRecord, IRecordState> {
     })
   }
 
-  update = () => {
+  handleUpdate = () => {
     const { id, date, amount, title, handleUpdate } = this.props
     const data = {
       date: this.recordDateVal.value,
@@ -59,9 +60,20 @@ class Record extends React.Component<IRecord, IRecordState> {
     })
   }
 
+  handleDelete = () => {
+    const { id, handleDelete } = this.props
+    deleteRecord(id).then((res: {data: IRecord}) => {
+      if (handleDelete) {
+        handleDelete(res.data)
+      }
+    }).catch((err: {message: string}) => {
+      console.log(err.message)
+    })
+  }
+
   renderRow = () => {
     const { date, title, amount } = this.props
-    const { handleToggle } = this
+    const { handleToggle, handleDelete } = this
     return (
       <tr>
         <td>{date}</td>
@@ -69,7 +81,7 @@ class Record extends React.Component<IRecord, IRecordState> {
         <td>{amount}</td>
         <td>
           <button className="btn btn-info mr-1" onClick={handleToggle}>Edit</button>
-          <button className="btn btn-danger">Delete</button>
+          <button className="btn btn-danger" onClick={handleDelete}>Delete</button>
         </td>
       </tr>
     )
@@ -77,7 +89,7 @@ class Record extends React.Component<IRecord, IRecordState> {
 
   renderForm = () => {
     const { date, title, amount } = this.props
-    const { update, handleToggle } = this
+    const { handleUpdate, handleToggle } = this
     return (
       <tr>
         <td>
@@ -105,7 +117,7 @@ class Record extends React.Component<IRecord, IRecordState> {
           />
         </td>
         <td>
-          <button className="btn btn-info mr-1" onClick={update}>Update</button>
+          <button className="btn btn-info mr-1" onClick={handleUpdate}>Update</button>
           <button className="btn btn-danger" onClick={handleToggle}>Cancle</button>
         </td>
       </tr>
