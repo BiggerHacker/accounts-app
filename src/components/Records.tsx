@@ -84,7 +84,7 @@ class Records extends React.Component<{}, IRecordState> {
     }
 
     return (
-      <div>
+      <div className="records">
         <h2>records</h2>
         <RecordForm onHandleCreate={this.handleCreate} />
         {recordsComponent}
