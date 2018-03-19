@@ -69,12 +69,13 @@ class RecordForm extends React.Component<IRecordFormProp, IRecordFormState> {
 
   render () {
     const {date, title, amount} = this.state
+    const { handleChange } = this
     return (
       <form className="form-inline mb-3" onSubmit={this.handleSubmit}>
         <div className="form-group">
           <input 
             className="form-control mr-3" 
-            onChange={this.handleChange}
+            onChange={handleChange}
             type="text" 
             value={date}
             placeholder="Date" 
@@ -84,7 +85,7 @@ class RecordForm extends React.Component<IRecordFormProp, IRecordFormState> {
         <div className="form-group mr-3">
           <input 
             className="form-control" 
-            onChange={this.handleChange}
+            onChange={handleChange}
             type="text" 
             value={title}
             placeholder="Title" 
@@ -94,7 +95,7 @@ class RecordForm extends React.Component<IRecordFormProp, IRecordFormState> {
         <div className="form-group mr-3">
           <input 
             className="form-control" 
-            onChange={this.handleChange}
+            onChange={handleChange}
             type="text" 
             value={amount}
             placeholder="Amount" 

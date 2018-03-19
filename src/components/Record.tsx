@@ -2,6 +2,7 @@ import * as React from 'react'
 import PropTypes from 'prop-types'
 
 import { IRecord } from './Records'
+import { updateRecord } from '../api/record'
 
 interface IRecordState {
   isEdit: boolean
@@ -14,6 +15,10 @@ class Record extends React.Component<IRecord, IRecordState> {
     title: PropTypes.string,
     amount: PropTypes.number
   }
+
+  private recordDateVal: HTMLInputElement
+  private recordTitleVal: HTMLInputElement
+  private recordAmountVal: HTMLInputElement
 
   constructor (props: IRecord) {
     super(props)
@@ -28,15 +33,33 @@ class Record extends React.Component<IRecord, IRecordState> {
     })
   }
 
+  update = () => {
+    const { id } = this.props
+    const data = {
+      date: this.recordDateVal.value,
+      title: this.recordTitleVal.value,
+      amount: Number(this.recordAmountVal.value)
+    }
+    updateRecord(id, data).then((res: {data: IRecord}) => {
+      console.log(res.data)
+      this.setState({
+        isEdit: false
+      })
+    }).catch((err: {message: string}) => {
+      console.log(err.message)
+    })
+  }
+
   renderRow = () => {
     const { date, title, amount } = this.props
+    const { handleToggle } = this
     return (
       <tr>
         <td>{date}</td>
         <td>{title}</td>
         <td>{amount}</td>
         <td>
-          <button className="btn btn-info mr-1" onClick={this.handleToggle}>Edit</button>
+          <button className="btn btn-info mr-1" onClick={handleToggle}>Edit</button>
           <button className="btn btn-danger">Delete</button>
         </td>
       </tr>
@@ -45,20 +68,36 @@ class Record extends React.Component<IRecord, IRecordState> {
 
   renderForm = () => {
     const { date, title, amount } = this.props
+    const { update, handleToggle } = this
     return (
       <tr>
         <td>
-          <input className="form-control" type="text" defaultValue={date} />
+          <input 
+            className="form-control" 
+            type="text" 
+            defaultValue={date}
+            ref={(rv: HTMLInputElement) => this.recordDateVal = rv}
+          />
         </td>
         <td>
-          <input className="form-control" type="text" defaultValue={title} />
+          <input 
+            className="form-control" 
+            type="text" 
+            defaultValue={title}
+            ref={(rv: HTMLInputElement) => this.recordTitleVal = rv}
+          />
         </td>
         <td>
-          <input className="form-control" type="text" defaultValue={String(amount)} />
+          <input 
+            className="form-control" 
+            type="text" 
+            defaultValue={String(amount)} 
+            ref={(rv: HTMLInputElement) => this.recordAmountVal = rv}
+          />
         </td>
         <td>
-          <button className="btn btn-info mr-1">Update</button>
-          <button className="btn btn-danger" onClick={this.handleToggle}>Cancle</button>
+          <button className="btn btn-info mr-1" onClick={update}>Update</button>
+          <button className="btn btn-danger" onClick={handleToggle}>Cancle</button>
         </td>
       </tr>
     )
