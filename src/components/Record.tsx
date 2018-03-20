@@ -56,7 +56,7 @@ class Record extends React.Component<IRecord, IRecordState> {
         isEdit: false
       })
     }).catch((err: {message: string}) => {
-      console.log(err.message)
+      alert('服务器出错，请再次点击更新')
     })
   }
 
@@ -67,7 +67,7 @@ class Record extends React.Component<IRecord, IRecordState> {
         handleDelete(res.data)
       }
     }).catch((err: {message: string}) => {
-      console.log(err.message)
+      alert('服务区出错，请重新删除')
     })
   }
 

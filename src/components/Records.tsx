@@ -3,6 +3,7 @@ import { getRecords } from '../api/record'
 
 import Record from './Record'
 import RecordForm from './RecordForm'
+import AmountCol from './AmountCol'
 
 export interface IRecord {
   id: string;
@@ -100,7 +101,7 @@ class Records extends React.Component<{}, IRecordState> {
     if (errMessage) {
       recordsComponent = <div>{errMessage}</div>
     } else if (isLoading) {
-      recordsComponent = <div>loading</div>
+      recordsComponent = <div>loading...</div>
     } else {
       recordsComponent = (
         <table className="table table-bordered">
@@ -122,6 +123,19 @@ class Records extends React.Component<{}, IRecordState> {
     return (
       <div className="records">
         <h2>records</h2>
+        <div style={{width: '100%', overflow: 'hidden'}}>
+          <div className="row mb-1">
+            <div className="col mr-1">
+              <AmountCol text="Credit" type="success" />
+            </div>
+            <div className="col mr-1">
+              <AmountCol text="Debit" type="danger" />
+            </div>
+            <div className="col">
+              <AmountCol text="Balance" type="info" />
+            </div>
+          </div>
+        </div>
         <RecordForm onHandleCreate={handleCreate} />
         {recordsComponent}
       </div>
