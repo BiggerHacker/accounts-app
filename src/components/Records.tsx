@@ -3,7 +3,7 @@ import { getRecords } from '../api/record'
 
 import Record from './Record'
 import RecordForm from './RecordForm'
-import AmountCol from './AmountCol'
+import AmountCard from './AmountCard'
 
 export interface IRecord {
   id: string;
@@ -86,10 +86,34 @@ class Records extends React.Component<{}, IRecordState> {
     })
   }
 
+  credits = () => {
+    const { records } = this.state
+    const credit: IRecord[] = records.filter((record: IRecord): boolean => {
+      return record.amount >= 0
+    })
+    return credit.reduce((prev: number, curr: IRecord): number => {
+      return prev + Number(curr.amount)
+    }, 0)
+  }
+
+  debits = () => {
+    const { records } = this.state
+    const credit: IRecord[] = records.filter((record: IRecord): boolean => {
+      return record.amount < 0
+    })
+    return credit.reduce((prev: number, curr: IRecord): number => {
+      return prev + Number(curr.amount)
+    }, 0)
+  }
+
+  balances = () => {
+    return this.credits() + this.debits()
+  }
+
   render () {
     const { records, errMessage, isLoading } = this.state
 
-    const { handleCreate, handleUpdate, handleDelete } = this
+    const { handleCreate, handleUpdate, handleDelete, credits, debits, balances } = this
 
     let recordsComponent = null;
     
@@ -126,13 +150,13 @@ class Records extends React.Component<{}, IRecordState> {
         <div style={{width: '100%', overflow: 'hidden'}}>
           <div className="row mb-1">
             <div className="col mr-1">
-              <AmountCol text="Credit" type="success" />
+              <AmountCard text="Credit" type="success" amount={credits} />
             </div>
             <div className="col mr-1">
-              <AmountCol text="Debit" type="danger" />
+              <AmountCard text="Debit" type="danger" amount={debits} />
             </div>
             <div className="col">
-              <AmountCol text="Balance" type="info" />
+              <AmountCard text="Balance" type="info" amount={balances} />
             </div>
           </div>
         </div>
